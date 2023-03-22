@@ -8,6 +8,13 @@ body {
     margin: 0;
 }
 
+.total-pulls {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    font-size: 18px;
+}
+
 h1 {
     margin-bottom: 1rem;
 }
