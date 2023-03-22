@@ -25,48 +25,59 @@
         let totalPullsCount = 0;
 
 
-function gachaPull(counter5Star, counter4Star) {
-    let result;
-
-    if (counter5Star >= 89) {
-        result = "5-star";
-    } else if (counter4Star >= 9) {
-        result = "4-star";
-    } else {
-        let pd5Star = counter5Star < 73 ? 0.006 : 0.006 + 0.06 * (counter5Star - 73);
-        let pd4Star = 0.051;
-        let prob = Math.random();
-
-        if (prob < pd5Star) {
-            result = "5-star";
-        } else if (prob < pd5Star + pd4Star) {
-            result = "4-star";
-        } else {
-            result = "3-star";
+        let last5StarIsUp = true;
+        let last4StarIsUp = true;
+        
+        function gachaPull(counter5Star, counter4Star) {
+            let result;
+        
+            if (counter5Star >= 89) {
+                result = "5-star";
+            } else if (counter4Star >= 9) {
+                result = "4-star";
+            } else {
+                let pd5Star = counter5Star < 73 ? 0.006 : 0.006 + 0.06 * (counter5Star - 73);
+                let pd4Star = 0.051;
+                let prob = Math.random();
+        
+                if (prob < pd5Star) {
+                    result = "5-star";
+                } else if (prob < pd5Star + pd4Star) {
+                    result = "4-star";
+                } else {
+                    result = "3-star";
+                }
+            }
+        
+            if (result === "5-star") {
+                if (last5StarIsUp) {
+                    const upProb = 0.5;
+                    if (Math.random() < upProb) {
+                        result = UP_5STAR_CHARACTER;
+                    } else {
+                        result = NON_UP_5STAR_CHARACTERS[Math.floor(Math.random() * NON_UP_5STAR_CHARACTERS.length)];
+                    }
+                } else {
+                    result = UP_5STAR_CHARACTER;
+                }
+                last5StarIsUp = result === UP_5STAR_CHARACTER;
+            } else if (result === "4-star") {
+                if (last4StarIsUp) {
+                    const upProb = 1 / 3;
+                    if (Math.random() < upProb) {
+                        result = UP_4STAR_CHARACTERS[Math.floor(Math.random() * UP_4STAR_CHARACTERS.length)];
+                    } else {
+                        result = NON_UP_4STAR_ITEMS[Math.floor(Math.random() * NON_UP_4STAR_ITEMS.length)];
+                    }
+                } else {
+                    result = UP_4STAR_CHARACTERS[Math.floor(Math.random() * UP_4STAR_CHARACTERS.length)];
+                }
+                last4StarIsUp = UP_4STAR_CHARACTERS.includes(result);
+            }
+        
+            return result;
         }
-    }
-
-    if (result === "5-star") {
-        if (last5Star === UP_5STAR_CHARACTER) {
-            result = NON_UP_5STAR_CHARACTERS[Math.floor(Math.random() * NON_UP_5STAR_CHARACTERS.length)];
-            last5Star = result;
-        } else {
-            result = UP_5STAR_CHARACTER;
-            last5Star = result;
-        }
-    } else if (result === "4-star") {
-        if (UP_4STAR_CHARACTERS.includes(last4Star)) {
-            result = NON_UP_4STAR_ITEMS[Math.floor(Math.random() * NON_UP_4STAR_ITEMS.length)];
-            last4Star = result;
-        } else {
-            result = UP_4STAR_CHARACTERS[Math.floor(Math.random() * UP_4STAR_CHARACTERS.length)];
-            last4Star = result;
-        }
-    }
-
-    return result;
-}
-
+        
 
 
 
